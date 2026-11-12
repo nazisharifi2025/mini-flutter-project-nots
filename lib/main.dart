@@ -7,6 +7,7 @@ import 'package:nots/theme/dark-mode.dart';
 import 'package:nots/theme/light-mode.dart';
 import 'package:nots/theme/theme-provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(
@@ -27,6 +28,7 @@ class _MyAppState extends State<MyApp> {
   Map<String, dynamic> _localization = {};
   @override
   void initState() {
+    super.initState();
     loadLanguage();
   }
 
@@ -35,25 +37,30 @@ class _MyAppState extends State<MyApp> {
         ? "assets/l10n/en.json"
         : "assets/l10n/fa.json";
     final rawData = await rootBundle.loadString(file);
-    _localization = await jsonDecode(rawData);
+    _localization = jsonDecode(rawData);
   }
 
-  void ChangeLanguage(String newLanguage) async {
-    final file = _locale.languageCode == "en"
-        ? "assets/l10n/en.json"
-        : "assets/l10n/fa.json";
-    final rawData = await rootBundle.loadString(file);
-    setState(() {
-      _locale = Locale("en");
-      _localization = jsonDecode(rawData);
-    });
-  }
+  // void ChangeLanguage(String newLanguage) async {
+  //   final file = _locale.languageCode == "en"
+  //       ? "assets/l10n/en.json"
+  //       : "assets/l10n/fa.json";
+  //   final rawData = await rootBundle.loadString(file);
+  //   setState(() {
+  //     _locale = Locale("en");
+  //     _localization = jsonDecode(rawData);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
         return MaterialApp(
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
           locale: _locale,
           supportedLocales: [Locale("en"), Locale("fa")],
           debugShowCheckedModeBanner: false,
@@ -66,7 +73,7 @@ class _MyAppState extends State<MyApp> {
             appBar: AppBar(
               backgroundColor: Colors.blueGrey,
               foregroundColor: Colors.white,
-              title: Text(_localization["appBar_title"]),
+              title: Text(_localization["appBar_title"] ?? "Notes"),
               actions: [
                 MaterialButton(
                   onPressed: () async {
