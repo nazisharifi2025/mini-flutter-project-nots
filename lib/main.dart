@@ -103,6 +103,14 @@ class _MyAppState extends State<MyApp> {
                 ),
               ],
             ),
+            drawer: Drawer(
+              child: Column(
+                children: [
+                  DrawerHeader(child: Text(_localization["appBar-title"])),
+                  ListTile(leading: Icon(Icons.home), title: Text()),
+                ],
+              ),
+            ),
             body: Center(child: Text(_localization["title"])),
           ),
         );
