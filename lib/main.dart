@@ -40,16 +40,16 @@ class _MyAppState extends State<MyApp> {
     _localization = jsonDecode(rawData);
   }
 
-  // void ChangeLanguage(String newLanguage) async {
-  //   final file = _locale.languageCode == "en"
-  //       ? "assets/l10n/en.json"
-  //       : "assets/l10n/fa.json";
-  //   final rawData = await rootBundle.loadString(file);
-  //   setState(() {
-  //     _locale = Locale("en");
-  //     _localization = jsonDecode(rawData);
-  //   });
-  // }
+  void ChangeLanguage(String newLanguage) async {
+    final file = newLanguage == "en"
+        ? "assets/l10n/en.json"
+        : "assets/l10n/fa.json";
+    final rawData = await rootBundle.loadString(file);
+    setState(() {
+      _locale = Locale(newLanguage);
+      _localization = jsonDecode(rawData);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,40 +74,59 @@ class _MyAppState extends State<MyApp> {
               backgroundColor: Colors.blueGrey,
               foregroundColor: Colors.white,
               title: Text(_localization["appBar_title"] ?? "Notes"),
-              actions: [
-                MaterialButton(
-                  onPressed: () async {
-                    final file = _locale.languageCode == "en"
-                        ? "assets/l10n/en.json"
-                        : "assets/l10n/fa.json";
-                    final rawData = await rootBundle.loadString(file);
-                    setState(() {
-                      _locale = Locale("en");
-                      _localization = jsonDecode(rawData);
-                    });
-                  },
-                  child: Text("English"),
-                ),
-                MaterialButton(
-                  onPressed: () async {
-                    final file = _locale.languageCode == "en"
-                        ? "assets/l10n/en.json"
-                        : "assets/l10n/fa.json";
-                    final rawData = await rootBundle.loadString(file);
-                    setState(() {
-                      _locale = Locale("fa");
-                      _localization = jsonDecode(rawData);
-                    });
-                  },
-                  child: Text("فارسی"),
-                ),
-              ],
             ),
             drawer: Drawer(
               child: Column(
                 children: [
-                  DrawerHeader(child: Text(_localization["appBar-title"])),
-                  ListTile(leading: Icon(Icons.home), title: Text()),
+                  DrawerHeader(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          _localization["appBar-title"],
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.home),
+                    title: Text(_localization["Home_Page"]),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.add_task_outlined),
+                    title: Text(_localization["add_note"]),
+                    onTap: () {
+                      // Navigator.push(context, )
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.settings),
+                    title: Text(_localization["settings"]),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.language_outlined),
+                    title: Text(
+                      _locale.languageCode == "en" ? "فارسی" : "English",
+                    ),
+                    onTap: () {
+                      ChangeLanguage(
+                        _locale.languageCode == "en" ? "fa" : "en",
+                      );
+                      Navigator.pop(context);
+                    },
+                  ),
                 ],
               ),
             ),

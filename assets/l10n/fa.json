@@ -1,4 +1,7 @@
 {
-    "appBar-title": "نوت",
-    "title": "سلام جناب"
+    "appBar-title": "یادداشت",
+    "title": "سلام جناب",
+    "Home_Page":  "خانه",
+    "add_note": "اضافه کردن یادداشت",
+    "settings": "تنظیمات"
 }

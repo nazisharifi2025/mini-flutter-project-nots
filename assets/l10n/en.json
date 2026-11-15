@@ -1,4 +1,7 @@
 {
     "appBar-title": "Note",
-    "title": "Hi There"
+    "title": "Hi There",
+    "Home_Page":  "Home",
+    "add_note": "Add Note",
+    "settings": "Settings"
 }
