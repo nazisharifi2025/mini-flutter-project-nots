@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nots/pages/Home-page.dart';
+// import 'package:nots/pages/Home-page.dart';
+import 'package:nots/pages/insert-todo.dart';
 import 'package:nots/theme/dark-mode.dart';
 import 'package:nots/theme/light-mode.dart';
 import 'package:nots/theme/theme-provider.dart';
@@ -84,7 +85,7 @@ class _MyAppState extends State<MyApp> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          _localization["appBar-title"],
+                          _localization["appBar-title"] ?? "",
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.w700,
@@ -95,22 +96,25 @@ class _MyAppState extends State<MyApp> {
                   ),
                   ListTile(
                     leading: Icon(Icons.home),
-                    title: Text(_localization["Home_Page"]),
+                    title: Text(_localization["Home_Page"] ?? ""),
                     onTap: () {
                       Navigator.pop(context);
                     },
                   ),
                   ListTile(
                     leading: Icon(Icons.add_task_outlined),
-                    title: Text(_localization["add_note"]),
+                    title: Text(_localization["add_note"] ?? ""),
                     onTap: () {
                       // Navigator.push(context, )
-                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => InsertTodo()),
+                      );
                     },
                   ),
                   ListTile(
                     leading: Icon(Icons.settings),
-                    title: Text(_localization["settings"]),
+                    title: Text(_localization["settings"] ?? ""),
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -130,7 +134,16 @@ class _MyAppState extends State<MyApp> {
                 ],
               ),
             ),
-            body: Center(child: Text(_localization["title"])),
+            body: Center(child: Text(_localization["title"] ?? "")),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => InsertTodo()),
+                );
+              },
+              child: Icon(Icons.mode_edit_outline_outlined),
+            ),
           ),
         );
       },
