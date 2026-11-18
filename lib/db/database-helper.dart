@@ -1,3 +1,5 @@
+//
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -14,31 +16,29 @@ class DatabaseHelper {
   }
 
   Future<Database> initDatabase() async {
-    final path = join(await getDatabasesPath(), "todo.db");
+    final path = join(await getDatabasesPath(), "note.db");
 
     return await openDatabase(
       path,
       version: 1,
       onCreate: (db, version) async {
         await db.execute(
-          "CREATE TABLE todo (id INTEGER PRIMARY KEY AUTOINCREMENT, task TEXT NOT NULL)",
+          "CREATE TABLE notes(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL,description TEXT NOT NULL ,created_at DATETIME DEFAULT CURRENT_TIMESTAMP)",
         );
       },
     );
   }
 
-  Future<int> insertTask(String task) async {
+  Future<int> insertNewNote(String title, String description) async {
     final db = await database;
-    return await db.insert("todo", {"task": task});
+    return await db.insert("notes", {
+      "title": title,
+      "description": description,
+    });
   }
 
-  Future<List<Map<String, dynamic>>> getTodo() async {
+  Future<List<Map<String, dynamic>>> getNote() async {
     final db = await database;
-    return await db.query("todo", orderBy: "id ASC");
-  }
-
-  Future<void> DeletTask(int id) async {
-    final db = await database;
-    await db.delete("todo", where: 'id = ?', whereArgs: [id]);
+    return await db.query("notes", orderBy: "id ASC");
   }
 }
