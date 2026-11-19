@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nots/db/database-helper.dart';
 import 'package:nots/pages/Create_note.dart';
 // import 'package:nots/pages/Home-page.dart';
 // import 'package:nots/pages/insert-todo.dart';
@@ -26,11 +27,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final database = DatabaseHelper();
+  List<Map<String, dynamic>> allNotes = [];
+  Future<void> fetchNotes() async {
+    final notes = await database.getNote();
+    setState(() {
+      allNotes = notes;
+    });
+  }
+
   dynamic _locale = Locale("en");
   Map<String, dynamic> _localization = {};
   @override
   void initState() {
     super.initState();
+    fetchNotes();
     loadLanguage();
   }
 
@@ -135,7 +146,46 @@ class _MyAppState extends State<MyApp> {
                 ],
               ),
             ),
-            body: createNote(),
+            body: Padding(
+              padding: const EdgeInsets.all(12),
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: allNotes.length,
+                itemBuilder: (context, index) {
+                  final dateToString = DateTime.parse(
+                    allNotes[index]["created_at"],
+                  ).toString();
+                  return Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          width: 2,
+                          color: Colors.grey.shade300,
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            allNotes[index]["title"],
+                            style: TextStyle(fontSize: 21),
+                          ),
+                          Text(
+                            dateToString,
+                            style: TextStyle(
+                              color: Colors.grey.shade400,
+                              fontWeight: FontWeight(12),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
             // Center(child: Text(_localization["title"] ?? "")),
             // floatingActionButton: FloatingActionButton(
             //   onPressed: () {

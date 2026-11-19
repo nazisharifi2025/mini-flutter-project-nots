@@ -22,6 +22,8 @@ class _createNoteState extends State<createNote> {
         _titleController.text.trim(),
         _DescriptionController.text.trim(),
       );
+      _titleController.clear();
+      _DescriptionController.clear();
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("A Note Added Successfully")));
     }
