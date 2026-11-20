@@ -65,7 +65,7 @@ class _createNoteState extends State<createNote> {
                           ),
                         ),
                         validator: (value) {
-                          if (value == Null) {
+                          if (value == null) {
                             return "Title is Required";
                           }
                           if (value!.length < 3) {
@@ -82,7 +82,7 @@ class _createNoteState extends State<createNote> {
                         ),
                         maxLines: 7,
                         validator: (value) {
-                          if (value == Null || value!.isEmpty) {
+                          if (value == null || value.isEmpty) {
                             return "Description is Required";
                           }
                         },
@@ -97,7 +97,7 @@ class _createNoteState extends State<createNote> {
                             vertical: 12,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: submitform,
                         child: Text("Save"),
                       ),
                     ],
