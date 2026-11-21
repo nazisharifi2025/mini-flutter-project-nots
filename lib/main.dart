@@ -128,7 +128,10 @@ class _MyAppState extends State<MyApp> {
                           children: [
                             Text(
                               allNotes[index]["title"],
-                              style: TextStyle(fontSize: 21),
+                              style: TextStyle(
+                                fontSize: 21,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                             Text(
                               finalDate.toString(),
