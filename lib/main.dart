@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:nots/db/database-helper.dart';
 import 'package:nots/pages/Create_note.dart';
 // import 'package:nots/pages/Home-page.dart';
@@ -85,12 +86,16 @@ class _MyAppState extends State<MyApp> {
           home: Scaffold(
             appBar: AppBar(
               foregroundColor: Colors.black,
-              title: Text(
-                "Notes",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight(24),
-                  fontSize: 32,
+              backgroundColor: Colors.grey.shade200,
+              title: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Text(
+                  "Notes",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight(24),
+                    fontSize: 32,
+                  ),
                 ),
               ),
             ),
@@ -103,34 +108,51 @@ class _MyAppState extends State<MyApp> {
                   final dateToString = DateTime.parse(
                     allNotes[index]["created_at"],
                   );
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 2, color: Colors.grey),
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            allNotes[index]["title"],
-                            style: TextStyle(fontSize: 21),
+                  final finalDate = DateFormat("yyyy - MM - dd HH:mm:ss")
+                      .format(dateToString);
+                  return Card(
+                    color: Colors.white,
+                    shadowColor: Colors.grey.shade400,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          border: Border.symmetric(
+                            horizontal: BorderSide(color: Colors.grey.shade600),
                           ),
-                          Text(
-                            dateToString.toString(),
-                            style: TextStyle(
-                              color: Colors.grey.shade600,
-                              fontWeight: FontWeight(12),
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              allNotes[index]["title"],
+                              style: TextStyle(fontSize: 21),
                             ),
-                          ),
-                        ],
+                            Text(
+                              finalDate.toString(),
+                              style: TextStyle(
+                                color: Colors.grey.shade600,
+                                fontWeight: FontWeight(12),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
                 },
               ),
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => createNote()),
+                );
+              },
+              child: Icon(Icons.mode_edit_outline_outlined),
             ),
           ),
         );
@@ -243,13 +265,13 @@ class _MyAppState extends State<MyApp> {
 //               ),
 //             ),
 //             // Center(child: Text(_localization["title"] ?? "")),
-//             floatingActionButton: FloatingActionButton(
-//               onPressed: () {
-//                 Navigator.push(
-//                   context,
-//                   MaterialPageRoute(builder: (context) => createNote()),
-//                 );
-//               },
-//               child: Icon(Icons.mode_edit_outline_outlined),
-//             ),
+// floatingActionButton: FloatingActionButton(
+//   onPressed: () {
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(builder: (context) => createNote()),
+//     );
+//   },
+//   child: Icon(Icons.mode_edit_outline_outlined),
+// ),
 //           ),
