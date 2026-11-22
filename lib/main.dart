@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:nots/db/database-helper.dart';
 import 'package:nots/pages/Create_note.dart';
+import 'package:nots/pages/note_Description.dart';
 // import 'package:nots/pages/Home-page.dart';
 // import 'package:nots/pages/insert-todo.dart';
 import 'package:nots/theme/dark-mode.dart';
@@ -67,99 +68,131 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(
-      builder: (context, themeProvider, child) {
-        return MaterialApp(
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          locale: _locale,
-          supportedLocales: [Locale("en"), Locale("fa")],
-          debugShowCheckedModeBanner: false,
-          theme: lightMode,
-          darkTheme: darkMode,
-          themeMode: themeProvider.isDarkMode
-              ? ThemeMode.dark
-              : ThemeMode.light,
-          home: Scaffold(
+    return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: _locale,
+      supportedLocales: [Locale("en"), Locale("fa")],
+      debugShowCheckedModeBanner: false,
+
+      home: Builder(
+        builder: (context) {
+          return Scaffold(
             appBar: AppBar(
-              foregroundColor: Colors.black,
-              backgroundColor: Colors.grey.shade200,
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.black,
               title: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Text(
-                  "Notes",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight(24),
-                    fontSize: 32,
-                  ),
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Notes",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.sticky_note_2_outlined,
+                          color: Colors.white,
+                          size: 16,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          "Your personal notes",
+                          style: TextStyle(color: Colors.grey, fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
-            backgroundColor: Colors.grey.shade200,
+            backgroundColor: Colors.black,
             body: Padding(
               padding: const EdgeInsets.all(12),
-              child: ListView.builder(
-                itemCount: allNotes.length,
-                itemBuilder: (context, index) {
-                  final dateToString = DateTime.parse(
-                    allNotes[index]["created_at"],
-                  );
-                  final finalDate = DateFormat("yyyy - MM - dd HH:mm:ss")
-                      .format(dateToString);
-                  return Card(
-                    color: Colors.white,
-                    shadowColor: Colors.grey.shade400,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          border: Border.symmetric(
-                            horizontal: BorderSide(color: Colors.grey.shade600),
+              child: Card(
+                color: Colors.grey.shade900,
+                shadowColor: Colors.grey.shade400,
+                child: ListView.builder(
+                  itemCount: allNotes.length,
+                  itemBuilder: (context, index) {
+                    final dateToString = DateTime.parse(
+                      allNotes[index]["created_at"],
+                    );
+                    final finalDate = DateFormat("yyyy - MM - dd HH:mm:ss")
+                        .format(dateToString);
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                NoteDetails(note: allNotes[index]),
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              allNotes[index]["title"],
-                              style: TextStyle(
-                                fontSize: 21,
-                                overflow: TextOverflow.ellipsis,
+                        );
+                      },
+
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Colors.grey,
+                                width: 1.0,
                               ),
                             ),
-                            Text(
-                              finalDate.toString(),
-                              style: TextStyle(
-                                color: Colors.grey.shade600,
-                                fontWeight: FontWeight(12),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                allNotes[index]["title"],
+                                style: TextStyle(
+                                  fontSize: 21,
+                                  color: Colors.white,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                            ),
-                          ],
+                              Text(
+                                finalDate.toString(),
+                                style: TextStyle(
+                                  color: Colors.grey.shade400,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
-                Navigator.push(
+                print("Button Clicked!");
+
+                Navigator.of(
                   context,
-                  MaterialPageRoute(builder: (context) => createNote()),
-                );
+                ).push(MaterialPageRoute(builder: (context) => createNote()));
               },
               child: Icon(Icons.mode_edit_outline_outlined),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

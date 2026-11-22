@@ -41,4 +41,9 @@ class DatabaseHelper {
     final db = await database;
     return await db.query("notes", orderBy: "id ASC");
   }
+
+  Future<void> DeleteNote(int id) async {
+    final db = await database;
+    await db.delete("notes", where: 'id = $id');
+  }
 }
