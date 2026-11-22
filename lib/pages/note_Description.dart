@@ -25,6 +25,7 @@ class _NoteDetailsState extends State<NoteDetails> {
             child: MaterialButton(
               onPressed: () {
                 database.DeleteNote(widget.note["id"]);
+                Navigator.pop(context, true);
               },
               child: Text("Delete"),
               color: Colors.red,

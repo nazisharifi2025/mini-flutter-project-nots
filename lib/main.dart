@@ -118,7 +118,7 @@ class _MyAppState extends State<MyApp> {
             ),
             backgroundColor: Colors.black,
             body: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
               child: Card(
                 color: Colors.grey.shade900,
                 shadowColor: Colors.grey.shade400,
@@ -168,7 +168,7 @@ class _MyAppState extends State<MyApp> {
                                 finalDate.toString(),
                                 style: TextStyle(
                                   color: Colors.grey.shade400,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.normal,
                                 ),
                               ),
                             ],
