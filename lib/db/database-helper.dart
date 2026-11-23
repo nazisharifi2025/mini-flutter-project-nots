@@ -46,4 +46,9 @@ class DatabaseHelper {
     final db = await database;
     await db.delete("notes", where: 'id = $id');
   }
+
+  Future<List<Map<String, dynamic>>> SearchNote(String searchText) async {
+    final db = await database;
+    return await db.query("nots", where: "title LIKE %$searchText%");
+  }
 }

@@ -107,7 +107,7 @@ class _MyAppState extends State<MyApp> {
                         ),
                         SizedBox(width: 5),
                         Text(
-                          "Your personal notes",
+                          "Your personal All notes",
                           style: TextStyle(color: Colors.grey, fontSize: 12),
                         ),
                       ],
@@ -119,65 +119,95 @@ class _MyAppState extends State<MyApp> {
             backgroundColor: Colors.black,
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
-              child: Card(
-                color: Colors.grey.shade900,
-                shadowColor: Colors.grey.shade400,
-                child: ListView.builder(
-                  itemCount: allNotes.length,
-                  itemBuilder: (context, index) {
-                    final dateToString = DateTime.parse(
-                      allNotes[index]["created_at"],
-                    );
-                    final finalDate = DateFormat("yyyy - MM - dd HH:mm:ss")
-                        .format(dateToString);
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                NoteDetails(note: allNotes[index]),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      TextField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Search Your Note",
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      ElevatedButton.icon(
+                        onPressed: () {},
+                        label: Text("Search"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blueGrey,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 20,
                           ),
-                        );
-                      },
-
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Colors.grey,
-                                width: 1.0,
-                              ),
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                allNotes[index]["title"],
-                                style: TextStyle(
-                                  fontSize: 21,
-                                  color: Colors.white,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              Text(
-                                finalDate.toString(),
-                                style: TextStyle(
-                                  color: Colors.grey.shade400,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadiusGeometry.circular(9),
                           ),
                         ),
                       ),
-                    );
-                  },
-                ),
+                    ],
+                  ),
+                  Card(
+                    color: Colors.grey.shade900,
+                    shadowColor: Colors.grey.shade400,
+                    child: ListView.builder(
+                      itemCount: allNotes.length,
+                      itemBuilder: (context, index) {
+                        final dateToString = DateTime.parse(
+                          allNotes[index]["created_at"],
+                        );
+                        final finalDate = DateFormat("yyyy - MM - dd HH:mm:ss")
+                            .format(dateToString);
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    NoteDetails(note: allNotes[index]),
+                              ),
+                            );
+                          },
+
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Colors.grey,
+                                    width: 1.0,
+                                  ),
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    allNotes[index]["title"],
+                                    style: TextStyle(
+                                      fontSize: 21,
+                                      color: Colors.white,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Text(
+                                    finalDate.toString(),
+                                    style: TextStyle(
+                                      color: Colors.grey.shade400,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
             floatingActionButton: FloatingActionButton(
