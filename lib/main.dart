@@ -31,12 +31,16 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final database = DatabaseHelper();
   List<Map<String, dynamic>> allNotes = [];
+  List<Map<String, dynamic>> OriginalNotes = [];
   Future<void> fetchNotes() async {
     final notes = await database.getNote();
     setState(() {
       allNotes = notes;
+      OriginalNotes = notes;
     });
   }
+
+  TextEditingController search = TextEditingController();
 
   dynamic _locale = Locale("en");
   Map<String, dynamic> _localization = {};
@@ -64,6 +68,19 @@ class _MyAppState extends State<MyApp> {
       _locale = Locale(newLanguage);
       _localization = jsonDecode(rawData);
     });
+  }
+
+  Future<void> handelSearch() async {
+    if (search.text.trim().isEmpty) {
+      setState(() {
+        allNotes = OriginalNotes;
+      });
+    } else {
+      final filterdNots = await database.SearchNote(search.text.trim());
+      setState(() {
+        allNotes = filterdNots;
+      });
+    }
   }
 
   @override
@@ -117,22 +134,29 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
             backgroundColor: Colors.black,
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
-              child: Column(
-                children: [
-                  Row(
+            body: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
                     children: [
-                      TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "Search Your Note",
+                      Expanded(
+                        child: TextField(
+                          controller: search,
+                          onChanged: (value) async {
+                            await handelSearch();
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: "Search Your Note",
+                          ),
                         ),
                       ),
                       SizedBox(width: 5),
-                      ElevatedButton.icon(
-                        onPressed: () {},
-                        label: Text("Search"),
+                      ElevatedButton(
+                        onPressed: () async {
+                          await handelSearch();
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blueGrey,
                           foregroundColor: Colors.white,
@@ -144,10 +168,14 @@ class _MyAppState extends State<MyApp> {
                             borderRadius: BorderRadiusGeometry.circular(9),
                           ),
                         ),
+                        child: Text("Search"),
                       ),
                     ],
                   ),
-                  Card(
+                ),
+                SizedBox(height: 12),
+                Expanded(
+                  child: Card(
                     color: Colors.grey.shade900,
                     shadowColor: Colors.grey.shade400,
                     child: ListView.builder(
@@ -207,8 +235,8 @@ class _MyAppState extends State<MyApp> {
                       },
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {

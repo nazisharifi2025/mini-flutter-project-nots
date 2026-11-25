@@ -49,6 +49,10 @@ class DatabaseHelper {
 
   Future<List<Map<String, dynamic>>> SearchNote(String searchText) async {
     final db = await database;
-    return await db.query("nots", where: "title LIKE %$searchText%");
+    return await db.query(
+      "notes",
+      where: "LOWER(title) LIKE LOWER(?)",
+      whereArgs: ["%$searchText%"],
+    );
   }
 }
