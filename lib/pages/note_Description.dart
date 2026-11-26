@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nots/db/database-helper.dart';
+import 'package:nots/pages/update-note.dart';
 
 class NoteDetails extends StatefulWidget {
   final note;
@@ -21,14 +22,29 @@ class _NoteDetailsState extends State<NoteDetails> {
         foregroundColor: Colors.white,
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: MaterialButton(
+            padding: const EdgeInsets.all(3.0),
+            child: IconButton(
               onPressed: () {
                 database.DeleteNote(widget.note["id"]);
                 Navigator.pop(context, true);
               },
-              child: Text("Delete"),
-              color: Colors.red,
+
+              icon: Icon(Icons.delete),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UpdateNote(note: widget.note),
+                  ),
+                );
+              },
+
+              icon: Icon(Icons.edit),
             ),
           ),
         ],

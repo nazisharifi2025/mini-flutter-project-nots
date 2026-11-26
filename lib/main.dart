@@ -138,41 +138,18 @@ class _MyAppState extends State<MyApp> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: search,
-                          onChanged: (value) async {
-                            await handelSearch();
-                          },
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: "Search Your Note",
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      ElevatedButton(
-                        onPressed: () async {
-                          await handelSearch();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueGrey,
-                          foregroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 20,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadiusGeometry.circular(9),
-                          ),
-                        ),
-                        child: Text("Search"),
-                      ),
-                    ],
+                  child: TextField(
+                    controller: search,
+                    onChanged: (value) async {
+                      await handelSearch();
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "Search Your Note",
+                    ),
                   ),
                 ),
+                SizedBox(width: 5),
                 SizedBox(height: 12),
                 Expanded(
                   child: Card(
